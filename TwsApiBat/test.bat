@@ -20,7 +20,7 @@ TASKLIST | FINDSTR /I "%exe%"
 IF ERRORLEVEL 1 (echo "%exe%" is not running) ELSE (taskkill /F /IM %exe%.exe)
 
 :: go to the library source directory
-cd C:\TwsApiCpp-master\TwsApiC++\Src
+cd C:\GIT\TwsApiCpp\TwsApiC++\Src
 
 :: g++ compiler line to build library source code into a dynamic link library.
 :: This line is specific to the g++ or MinGW compiler and will need to be slightly
@@ -29,4 +29,4 @@ cd C:\TwsApiCpp-master\TwsApiC++\Src
 :: You may get a warning about certain macros in one of the source code files being redefined.
 :: You can go in and remove the redefinitions or leave them as is. That is source code from the 
 :: JanBoonen repository.
-g++ -D _WIN64 -D CorrectAfxWinIncluded -shared -static -static-libgcc -static-libstdc++ -s -std=gnu++20 %source%.cpp -IC:\TwsApiCpp-master\TwsApiC++\Api -IC:\TwsApiCpp-master\TwsApiC++\Src -IC:\TwsApiCpp-master\source\PosixClient\Shared -IC:\TwsApiCpp-master\source\PosixClient\src -LC:\TwsApiCpp-master\TwsApiC++\Api -Wl,--no-as-needed -o C:\TwsApiCpp-master\TwsApiC++\Api\TwsCppApi_64.dll -Wno-deprecated -lwsock32 -lws2_32 -lpthread
+g++ -D _WIN64 -D CorrectAfxWinIncluded -shared -static -static-libgcc -static-libstdc++ -s -std=gnu++20 %source%.cpp -IC:\GIT\TwsApiCpp\TwsApiC++\Api -IC:\GIT\TwsApiCpp\TwsApiC++\Src -IC:\GIT\TwsApiCpp\source\PosixClient\Shared -IC:\GIT\TwsApiCpp\source\PosixClient\src -LC:\GIT\TwsApiCpp\TwsApiC++\Api -Wl,--no-as-needed -o C:\GIT\TwsApiCpp\TwsApiC++\Api\TwsCppApi_64.dll -Wno-deprecated -lwsock32 -lws2_32 -lpthread
