@@ -22,11 +22,11 @@ cd C:\GIT\TwsApiCpp\TwsApiC++\Test\Src
 :: Link to that here: https://youtu.be/iIGA0x8mImY
 
 :: boost is not necessary and if you do not have boost just remove the include for boost 
-g++ -D _WIN64 -march=x86-64 -O0 -static -s -std=gnu++20 %source%.cpp -IC:\boost_1_82_0 -IC:\GIT\TwsApiCpp\TwsApiC++\Api -IC:\GIT\TwsApiCpp\TwsApiC++\Src -IC:\GIT\TwsApiCpp\source\PosixClient\Shared -IC:\GIT\TwsApiCpp\source\PosixClient\src -o C:\GIT\TwsApiCpp\TwsApiC++\Api\%exe% C:\GIT\TwsApiCpp\TwsApiC++\Api\TwsCppApi_64.dll -Wno-deprecated 
-cd C:\GIT\TwsApiCpp\TwsApiC++\Api
+g++ -D _WIN64 -march=x86-64 -O0 -static -s -std=gnu++20 %source%.cpp -ID:\boost_1_80_0 -IC:\GIT\TwsApiCpp\TwsApiC++\Api -IC:\GIT\TwsApiCpp\TwsApiC++\Src -IC:\GIT\TwsApiCpp\source\PosixClient\Shared -IC:\GIT\TwsApiCpp\source\PosixClient\src -o C:\GIT\TwsApiCpp\TwsApiC++\Api\%exe% C:\GIT\TwsApiCpp\TwsApiC++\Api\TwsCppApi_64.dll -Wno-deprecated 
+@REM cd C:\GIT\TwsApiCpp\TwsApiC++\Api
 
-:: This is another windows specific command used for killing the command window.
-:: It should kill the command window that the previous application was running
-:: in. before it was killed using the earlier command.
-taskkill /F /IM cmd.exe /FI "WINDOWTITLE eq C:\WINDOWS\system32\cmd.exe*"
-start cmd /k %exe%
+@REM This is another windows specific command used for killing the command window.
+@REM It should kill the command window that the previous application was running
+@REM in. before it was killed using the earlier command.
+@REM taskkill /F /IM cmd.exe /FI "WINDOWTITLE eq C:\WINDOWS\system32\cmd.exe*"
+@REM start cmd /k %exe%
