@@ -11,7 +11,7 @@ class MyEWrapper: public EWrapperL0
 
 
 
-int main( void )
+int main_empty( void )
 {
 	MyEWrapper	MW;
 	EClientL0*	EC = EClientL0::New( &MW );

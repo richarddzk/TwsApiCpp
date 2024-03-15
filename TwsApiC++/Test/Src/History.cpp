@@ -1,6 +1,8 @@
 //============================================================================
 // TwsApi Test
 //============================================================================
+
+#define _CRT_SECURE_NO_WARNINGS
 #include "TwsApiL0.h"
 #include "TwsApiDefs.h"
 using namespace TwsApi;
@@ -16,7 +18,7 @@ class MyEWrapper: public EWrapperL0
 	public:
 
 	MyEWrapper( bool CalledFromThread = true ) : EWrapperL0( CalledFromThread ) {}
-
+	
 	virtual void winError( const IBString& str, int lastError )
 	{
 		fprintf( stderr, "WinError: %d = %s\n", lastError, (const char*)str );
@@ -71,7 +73,7 @@ class MyEWrapper: public EWrapperL0
 //----------------------------------------------------------------------------
 // main
 //----------------------------------------------------------------------------
-int main( int argc, const char* argv[] )
+int main_history( int argc, const char* argv[] )
 {
 	Contract			C;
 	C.symbol			= "MSFT";

@@ -1,11 +1,12 @@
 //============================================================================
 // TwsApi Test
 //============================================================================
+#define _CRT_SECURE_NO_WARNINGS
 #include "TwsApiL0.h"
 #include "TwsApiDefs.h"
 using namespace TwsApi;
 
-#ifdef WIN32
+#ifdef _WIN32
 	#include <windows.h>		// Sleep(), in miliseconds
 	#include <process.h>
 	#define CurrentThreadId GetCurrentThreadId
@@ -31,12 +32,14 @@ class MyEWrapper: public EWrapperL0
 
 	virtual void tickPrice( TickerId tickerId, TickType field, double price, int canAutoExecute )
 	{
-		time_t		_t; time(&_t);
-		struct tm*	_tm	= localtime( &_t );
+		time_t _t; time(&_t);
+		struct tm _tm;
+		localtime_s(&_tm, &_t);
+
 		PrintProcessId,printf
 			( "TP: %4ld %02d:%02d:%02d %10s %5.3f\n"
 			, tickerId
-			, _tm->tm_hour, _tm->tm_min, _tm->tm_sec
+			, _tm.tm_hour, _tm.tm_min, _tm.tm_sec
 			, *(TickTypes::ENUMS)field, price
 			);
 	}
@@ -66,12 +69,12 @@ class MyEWrapper: public EWrapperL0
 //----------------------------------------------------------------------------
 // main
 //----------------------------------------------------------------------------
-int main( void )
+int main_clients( void )
 {
 #define NR_CONNECTIONS 8	// 8 is maximum allowed by TWS
 
 	Contract	C;
-	C.symbol	= "MSFT";
+	C.symbol	= "URTH";
 	C.secType	= *SecType::STK;		//"STK"
 	C.currency	= "USD";
 	C.exchange	= *Exchange::IB_SMART;	//"SMART";
@@ -141,7 +144,8 @@ int main( void )
 	printf("\n");
 
 
-	PrintProcessId,printf( "Press return to end\n" ); char s[10]; gets(s);
+	PrintProcessId,printf( "Press return to end\n" ); char s[10]; fgets(s, sizeof(s), stdin);
+	s[strcspn(s, "\n")] = 0;
 
 	return 0;
 }

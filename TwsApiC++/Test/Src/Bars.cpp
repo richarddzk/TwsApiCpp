@@ -1,19 +1,21 @@
 //============================================================================
 // TwsApi Test
 //============================================================================
+
+#define _CRT_SECURE_NO_WARNINGS
 #include "TwsApiL0.h"
 #include "TwsApiDefs.h"
 using namespace TwsApi;
 
 // to use the Sleep function
-#ifdef WIN32
+#ifdef _WIN32
 	#include <windows.h>		// Sleep(), in miliseconds
 	#include <process.h>
 	#define CurrentThreadId GetCurrentThreadId
 #else
-	#include <unistd.h>			// usleep(), in microseconds
+	//#include <unistd.h>			// usleep(), in microseconds
 	#define Sleep( m ) usleep( m*1000 )
-	#include <pthread.h>
+	//#include <pthread.h>
 	#define CurrentThreadId pthread_self
 #endif
 
@@ -43,8 +45,9 @@ class MyEWrapper: public EWrapperL0
 
 	virtual void tickPrice( TickerId tickerId, TickType field, double price, int canAutoExecute )
 	{
-		time_t		_t; time(&_t);
-		struct tm*	_tm	= localtime( &_t );
+		time_t _t; time(&_t);
+		struct tm _tm;
+		localtime_s(&_tm, &_t);
 		switch( field )
 		{
 		case TickTypes::Open:
@@ -55,7 +58,7 @@ class MyEWrapper: public EWrapperL0
 		printf
 			( "TP: %4ld %02d:%02d:%02d %15s %5.3f\n"
 			, tickerId
-			, _tm->tm_hour, _tm->tm_min, _tm->tm_sec
+			, _tm.tm_hour, _tm.tm_min, _tm.tm_sec
 			, *(TickTypes::ENUMS)field, price
 			);
 		default:{}
@@ -64,15 +67,16 @@ class MyEWrapper: public EWrapperL0
 
 	virtual void tickSize( TickerId tickerId, TickType field, int size )
 	{
-		time_t		_t; time(&_t);
-		struct tm*	_tm	= localtime( &_t );
+		time_t _t; time(&_t);
+		struct tm _tm;
+		localtime_s(&_tm, &_t);
 		switch( field )
 		{
 		case TickTypes::LastSize:
 			printf
 				( "TP: %4ld %02d:%02d:%02d %15s %5d\n"
 				, tickerId
-				, _tm->tm_hour, _tm->tm_min, _tm->tm_sec
+				, _tm.tm_hour, _tm.tm_min, _tm.tm_sec
 				, *(TickTypes::ENUMS)field, size
 				);
 		default:{}
@@ -82,9 +86,11 @@ class MyEWrapper: public EWrapperL0
 	virtual void tickString( TickerId tickerId, TickType tickType, const IBString& value )
 	{
 		time_t		_t; time(&_t);
-		struct tm	_tm	= *localtime( &_t );
+		struct tm	_tm;
+		localtime_s(&_tm, &_t);
 		time_t		_t1 = atol((const char*)value);
-		struct tm	_tm1= *localtime( &_t1 );
+		struct tm	_tm1;
+		localtime_s(&_tm, &_t);
 		
 		switch( tickType )
 		{
@@ -119,7 +125,7 @@ class MyEWrapper: public EWrapperL0
 //----------------------------------------------------------------------------
 // main
 //----------------------------------------------------------------------------
-int main( void )
+int main_bars( void )
 {
 //	TestEnums();
 
@@ -154,6 +160,7 @@ int main( void )
 
 	delete EC;
 
-	{ PrintProcessId,printf( "Press return to end\n" ); char s[10]; gets(s); }
+	{ PrintProcessId, printf("Press return to end\n"); char s[10]; fgets(s, sizeof(s), stdin);
+	s[strcspn(s, "\n")] = 0; }
 	return 0;
 }
